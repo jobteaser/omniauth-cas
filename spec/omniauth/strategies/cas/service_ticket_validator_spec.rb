@@ -9,6 +9,7 @@ describe OmniAuth::Strategies::CAS::ServiceTicketValidator do
   let(:provider_options) do
     double('provider_options',
       disable_ssl_verification?: false,
+      ssl_version: nil,
       ca_path: '/etc/ssl/certsZOMG'
     )
   end
