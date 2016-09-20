@@ -22,6 +22,16 @@ module OmniAuth
         # Executes a network request to process the CAS Service Response
         def call
           @response_body = get_service_response_body
+
+          # This has been added to allow tracing the service's response. Add
+          # a proc to the options hash when configuring the strategy to use it:
+          #     config.omniauth sso_id.to_sym, {
+          #       ...,
+          #       yield_with_service_response: proc { |o| logger.debug(o) }
+          #     }
+          # DUPLICATE: saml_ticket_validator.rb service_ticket_validator.rb
+          @options.yield_with_service_response.call(@response_body) if @options.yield_with_service_response
+
           @success_body = find_authentication_success(@response_body)
           self
         end
