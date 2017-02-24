@@ -31,8 +31,9 @@ module OmniAuth
         def logout_request
           @logout_request ||= begin
             saml = Nokogiri.parse(@request.params['logoutRequest'])
-            name_id = saml.xpath('//saml:NameID').text
-            sess_idx = saml.xpath('//samlp:SessionIndex').text
+            saml.remove_namespaces!
+            name_id = saml.xpath('//NameID').text
+            sess_idx = saml.xpath('//SessionIndex').text
             inject_params(name_id:name_id, session_index:sess_idx)
             @request
           end
