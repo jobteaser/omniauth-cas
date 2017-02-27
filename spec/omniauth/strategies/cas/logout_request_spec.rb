@@ -99,5 +99,24 @@ describe OmniAuth::Strategies::CAS::LogoutRequest do
           .with(:logout_request, exception)
       end
     end
+
+    context 'with an incomplete logout request (missing saml namespace)' do
+      let(:logoutRequest) do
+        %Q[
+          <samlp:LogoutRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="123abc-1234-ab12-cd34-1234abcd" Version="2.0" IssueInstant="#{Time.now.to_s}">
+            <saml:NameID>@NOT_USED@</saml:NameID>
+            <samlp:SessionIndex>ST-123456-123abc456def</samlp:SessionIndex>
+          </samlp:LogoutRequest>
+        ]
+      end
+
+      let(:callback) { Proc.new{true} }
+
+      it 'responds with OK' do
+        expect(subject[0]).to eq 200
+        expect(subject[2].body).to eq ['OK']
+      end
+    end
+
   end
 end
