@@ -63,7 +63,7 @@ describe OmniAuth::Strategies::CAS::LogoutRequest do
 
       it 'responds with OK' do
         expect(subject[0]).to eq 200
-        expect(subject[2].body).to eq ['OK']
+        expect(subject[2]).to eq ['OK']
       end
     end
 
@@ -72,7 +72,7 @@ describe OmniAuth::Strategies::CAS::LogoutRequest do
 
       it 'responds with OK' do
         expect(subject[0]).to eq 200
-        expect(subject[2].body).to eq ['OK']
+        expect(subject[2]).to eq ['OK']
       end
     end
 
@@ -81,7 +81,7 @@ describe OmniAuth::Strategies::CAS::LogoutRequest do
 
       it 'responds with OK' do
         expect(subject[0]).to eq 400
-        expect(subject[2].body).to eq ['Bad Request']
+        expect(subject[2]).to eq ['Bad Request']
       end
     end
 
@@ -114,7 +114,7 @@ describe OmniAuth::Strategies::CAS::LogoutRequest do
 
       it 'responds with OK' do
         expect(subject[0]).to eq 200
-        expect(subject[2].body).to eq ['OK']
+        expect(subject[2]).to eq ['OK']
       end
     end
 
