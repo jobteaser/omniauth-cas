@@ -1,8 +1,5 @@
 # OmniAuth CAS Strategy [![Gem Version][version_badge]][version] [![Build Status][travis_status]][travis]
 
-> `omniauth-cas` is no longer maintained!
-> If you'd like to take over please open an issue!
-
 [version_badge]: https://badge.fury.io/rb/omniauth-cas.png
 [version]: http://badge.fury.io/rb/omniauth-cas
 [travis]: http://travis-ci.org/dlindahl/omniauth-cas
@@ -74,9 +71,13 @@ Other configuration options:
 
     ```ruby
     provider :cas,
-             fetch_raw_info: lambda { |strategy, options, ticket, user_info|
-               ExternalService.get(user_info[:user]).attributes
-            }
+      fetch_raw_info: Proc.new { |strategy, opts, ticket, user_info, rawxml|
+        return {} if user_info.empty? || rawxml.nil? # Auth failed
+
+        extra_info = ExternalService.get(user_info[:user]).attributes
+        extra_info.merge!({'roles' => rawxml.xpath('//cas:roles').map(&:text)})
+        extra_info
+      }
     ```
 
 Configurable options for values returned by CAS:
